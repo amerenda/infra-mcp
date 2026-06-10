@@ -305,9 +305,9 @@ def resolve_secret_name(secret_name: str) -> dict:
     Requires BWS_SERVICE_ACCOUNT_TOKEN env var.
     Returns the secret value for use in compose files or config — never stores it.
     """
-    token = os.environ.get("BWS_SERVICE_ACCOUNT_TOKEN", "")
+    token = os.environ.get("BWS_SERVICE_ACCOUNT_TOKEN") or os.environ.get("BWS_ACCESS_TOKEN", "")
     if not token:
-        return {"error": "BWS_SERVICE_ACCOUNT_TOKEN not set."}
+        return {"error": "BWS_ACCESS_TOKEN not set."}
 
     rc, stdout, stderr = _run(
         ["bws", "secret", "list", "--output", "json"],
